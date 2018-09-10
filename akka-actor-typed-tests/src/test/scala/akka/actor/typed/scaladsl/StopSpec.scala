@@ -6,12 +6,12 @@ package akka.actor.typed.scaladsl
 
 import akka.Done
 import akka.actor.testkit.typed.TE
-import akka.actor.testkit.typed.scaladsl.ActorTestKit
-import akka.actor.typed.{ PostStop, TypedAkkaSpecWithShutdown }
-
+import akka.actor.typed.PostStop
 import scala.concurrent.Promise
 
-class StopSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
+import akka.actor.testkit.typed.scaladsl.ActorTestKitWordSpec
+
+class StopSpec extends ActorTestKitWordSpec {
 
   "Stopping an actor" should {
 

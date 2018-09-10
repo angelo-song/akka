@@ -13,7 +13,6 @@ import akka.actor.typed.scaladsl.Behaviors._
 import akka.testkit.{ ErrorFilter, EventFilter }
 import akka.actor.testkit.typed.scaladsl._
 import akka.actor.testkit.typed._
-import com.typesafe.config.ConfigFactory
 import org.scalatest.{ Matchers, WordSpec }
 import scala.concurrent.duration._
 import scala.util.control.NoStackTrace
@@ -243,12 +242,10 @@ class StubbedSupervisionSpec extends WordSpec with Matchers {
   }
 }
 
-class SupervisionSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
-
-  override def config = ConfigFactory.parseString(
-    """
+class SupervisionSpec extends ActorTestKitWordSpec(
+  """
       akka.loggers = [akka.testkit.TestEventListener]
-    """)
+    """) {
 
   import SupervisionSpec._
   private val nameCounter = Iterator.from(0)
@@ -740,7 +737,7 @@ class SupervisionSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
           Behaviors.supervise(Behaviors.stopped[Command])
             .onFailure(strategy)
         )
-        TestProbe().expectTerminated(actor, 3.second)
+        createTestProbe().expectTerminated(actor, 3.second)
       }
 
       "that is stopped after setup should be stopped" in {
@@ -750,7 +747,7 @@ class SupervisionSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
               Behaviors.stopped)
           ).onFailure(strategy)
         )
-        TestProbe().expectTerminated(actor, 3.second)
+        createTestProbe().expectTerminated(actor, 3.second)
       }
 
       // this test doesn't make sense for Resume since there will be no second setup
@@ -774,7 +771,7 @@ class SupervisionSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
           EventFilter[TE](occurrences = 1).intercept {
             actor ! "boom"
           }
-          TestProbe().expectTerminated(actor, 3.second)
+          createTestProbe().expectTerminated(actor, 3.second)
         }
       }
     }

@@ -13,6 +13,7 @@ import akka.actor.typed.Behavior
 import akka.actor.typed.Props
 import akka.util.Timeout
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 import org.junit.Rule
 import org.junit.rules.ExternalResource
 import org.scalatest.Args
@@ -43,6 +44,12 @@ abstract class ActorTestKitWordSpec(testKit: ActorTestKit) extends ActorTestKitB
   with WordSpecLike with Matchers with BeforeAndAfterAll with ScalaFutures with Eventually {
 
   def this() = this(ActorTestKit(ActorTestKitBase.testNameFromCallStack()))
+
+  /**
+   * Use a custom config for the actor system.
+   */
+  def this(config: String) =
+    this(ActorTestKit(ActorTestKitBase.testNameFromCallStack(), ConfigFactory.parseString(config)))
 
   /**
    * Use a custom config for the actor system.

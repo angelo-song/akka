@@ -7,6 +7,8 @@ package akka.actor.typed
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.testkit.typed.TestKitSettings
 import akka.actor.testkit.typed.scaladsl._
+import org.scalatest.Matchers
+import org.scalatest.WordSpec
 
 import scala.util.control.NoStackTrace
 
@@ -26,7 +28,7 @@ object DeferredSpec {
     })
 }
 
-class DeferredSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
+class DeferredSpec extends ActorTestKitWordSpec {
 
   import DeferredSpec._
   implicit val testSettings = TestKitSettings(system)
@@ -125,7 +127,7 @@ class DeferredSpec extends ActorTestKit with TypedAkkaSpecWithShutdown {
   }
 }
 
-class DeferredStubbedSpec extends TypedAkkaSpec {
+class DeferredStubbedSpec extends WordSpec with Matchers {
 
   import DeferredSpec._
 
